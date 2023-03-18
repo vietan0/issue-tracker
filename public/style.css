@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+
 * {
   margin: 0px;
   padding: 0px;
@@ -5,6 +7,16 @@
 
 body {
   padding: 10px;
+  font-family: 'Lato', sans-serif;
+}
+
+input[type='text'], textarea {
+  width: 300px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
+  outline: 1px solid rgb(73, 73, 73);
+  border: none;
 }
 
 .issue {
