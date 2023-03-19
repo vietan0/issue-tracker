@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const Project = require('./models/Project');
+const Issue = require('./models/Issue');
 
 async function connectDB(uri) {
   mongoose.set('strictQuery', false);
   mongoose.connect(uri);
-  // await Project.deleteMany({});
+  await Issue.deleteMany({});
   console.log('Connected to database!');
 }
 

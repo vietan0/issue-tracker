@@ -4,6 +4,7 @@ const issueSchema = new Schema({
   issue_title: { type: String, required: [true, 'issue_title is required!'] },
   issue_text: { type: String, required: [true, 'issue_text is required!'] },
   created_by: { type: String, required: [true, 'created_by is required!'] },
+  project: { type: String, required: [true, 'project is required!'] },
   assigned_to: { type: String, default: '' },
   status_text: { type: String, default: '' },
   open: { type: Boolean, default: true },
@@ -11,11 +12,7 @@ const issueSchema = new Schema({
   updated_on: { type: Date, default: new Date(Date.now()).toISOString() },
 });
 
-const projectSchema = new Schema({
-  name: { type: String, required: [true, 'Project must have a name!'], unique: true },
-  issues: [issueSchema],
-});
 
-const Project = model('Project', projectSchema);
+const Issue = model('Issue', issueSchema);
 
-module.exports = Project;
+module.exports = Issue;
