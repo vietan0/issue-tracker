@@ -10,18 +10,27 @@ module.exports = function (app) {
       const { projectName } = req.params; // vietanProject
       const issues = await Issue.find({ project: projectName });
       if (issues) {
-        const filteredIssues = issues.filter((issue) =>
-          Object.entries(req.query).length === 0 ? issue : queryAnObject(issue, req.query) === true,
-        );
-        res.json(filteredIssues);
+        if (Object.entries(req.query).length === 0) res.json(issues);
+        else {
+          const filteredIssues = issues.filter((issue) => queryAnObject(issue, req.query) === true);
+          res.json(filteredIssues);
+        }
       } else res.json([]);
     })
 
     .post(async function (req, res) {
       const { projectName } = req.params; // vietanProject
       try {
-        const newIssue = await Issue.create({ ...req.body, project: projectName });
-        res.json(newIssue);
+        if (Array.isArray(req.body)) {
+          // passing an array of data to POST
+          const completedBody = req.body.map((issue) => ({ ...issue, project: projectName }));
+          const newIssues = await Issue.create(completedBody);
+          res.json(newIssues);
+        } else {
+          // passing one data obj to POST
+          const newIssue = await Issue.create({ ...req.body, project: projectName });
+          res.json(newIssue);
+        }
       } catch (err) {
         if (err.message.includes('is required!')) res.json({ error: 'required field(s) missing' });
       }
@@ -29,7 +38,6 @@ module.exports = function (app) {
 
     .put(async function (req, res) {
       const { _id } = req.body;
-      console.log('_id :>> ', _id);
       if (_id === undefined) return res.json({ error: 'missing _id' });
       const updateBody = { ...req.body, updated_on: new Date(Date.now()).toISOString() };
       delete updateBody._id;
